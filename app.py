@@ -21,12 +21,13 @@ def inference(model_inputs:dict) -> dict:
 
     # Parse out your arguments
     prompt = model_inputs.get('prompt', None)
+    params = model_inputs.get('params', None)
     if prompt == None:
         return {'message': "No prompt provided"}
     
     # Run the model
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to("cuda")
-    output = model.generate(input_ids, min_length=30, max_length=100)
+    output = model.generate(input_ids, min_length=params["min_length"], max_length=params["max_length"], no_repeat_ngram_size=params["no_repeat_ngram_size"], early_stopping=params["early_stopping"])
     result = tokenizer.decode(output[0], skip_special_tokens=True)
 
     # Return the results as a dictionary
