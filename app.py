@@ -10,7 +10,7 @@ def init():
     device = 0 if torch.cuda.is_available() else -1
 
     # Flan-T5 version, if changed be sure to update in download.py too
-    model_name = "google/flan-t5-xl"
+    model_name = "google/flan-t5-large"
     tokenizer = T5Tokenizer.from_pretrained(model_name)
     model = T5ForConditionalGeneration.from_pretrained(model_name).to("cuda")
 
@@ -26,7 +26,7 @@ def inference(model_inputs:dict) -> dict:
     
     # Run the model
     input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to("cuda")
-    output = model.generate(input_ids, max_length=100)
+    output = model.generate(input_ids, min_length=30, max_length=100)
     result = tokenizer.decode(output[0], skip_special_tokens=True)
 
     # Return the results as a dictionary
