@@ -25,7 +25,7 @@ def inference(model_inputs:dict) -> dict:
         return {'message': "No prompt provided"}
     
     # Run the model
-    input_ids = tokenizer(prompt, max_length = 14000, return_tensors="pt").input_ids.to("cuda")
+    input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to("cuda")
     output = model.generate(input_ids, max_length=100)
     result = tokenizer.decode(output[0], skip_special_tokens=True)
 
